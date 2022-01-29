@@ -17,10 +17,11 @@ class AddUserTransactionUseCase(
      * - amount should be > 0
      * - creation date should be <= Today [No future transactions]
      */
+    @Throws(AssertionError::class)
     suspend operator fun invoke(transaction: Transaction): Boolean {
-        if (transaction.title.isNullOrBlank()) return false
-        if (transaction.amount <= 0f) return false
-        if (Date(transaction.creationDateMillis.timeMillis ).after(Date())) return false
+        assert(transaction.title.isNullOrBlank().not()) { "Invalid transaction title >> ${transaction.title}" }
+        assert((transaction.amount <= 0f).not()) { "Invalid transaction Amount >> ${transaction.amount}" }
+        assert((Date(transaction.creationDateMillis.timeMillis ).after(Date())).not()) { "Invalid transaction creationDate >> ${transaction.creationDateMillis.timeMillis}" }
 
         return userTransactionsRepository.createUserTransaction(transaction)
     }
