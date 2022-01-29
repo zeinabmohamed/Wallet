@@ -13,7 +13,7 @@ internal class UserTransactionsRepositoryImpl(
 ) : UserTransactionsRepository {
 
     override suspend fun getUserTransactionsForTransactionType(transactionType: TransactionType): List<Transaction> {
-        TODO("Not yet implemented")
+        return userTransactionsLocalDataSource.getUserTransactionsForTransactionType(transactionType)
     }
 
     override suspend fun getUserAllTransactions(): List<Transaction> {
@@ -21,6 +21,6 @@ internal class UserTransactionsRepositoryImpl(
     }
 
     override suspend fun createUserTransaction(transaction: Transaction): Boolean {
-        return userTransactionsLocalDataSource.createUserTransaction()
+        return userTransactionsLocalDataSource.createUserTransaction(transaction)
     }
 }

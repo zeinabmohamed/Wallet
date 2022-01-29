@@ -7,12 +7,9 @@ import com.zm.org.balance.util.TimeMillis
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
-import io.mockk.verify
 import kotlinx.coroutines.test.runTest
-import org.hamcrest.CoreMatchers.any
 import org.junit.Test
 
-import org.junit.Assert.*
 import org.junit.Before
 
 class UserTransactionsRepositoryImplTest {
@@ -23,13 +20,23 @@ class UserTransactionsRepositoryImplTest {
 
     @Before
     fun setup() {
-        coEvery { mockedUserTransactionsLocalDataSource.createUserTransaction() } returns true
-        coEvery { mockedUserTransactionsLocalDataSource.getUserAllTransactions() } returns emptyList<Transaction>()
+        coEvery { mockedUserTransactionsLocalDataSource.createUserTransaction(any()) } returns true
+        coEvery { mockedUserTransactionsLocalDataSource.getUserAllTransactions() } returns emptyList()
+        coEvery { mockedUserTransactionsLocalDataSource.getUserTransactionsForTransactionType(any()) } returns emptyList()
     }
 
     @Test
-    fun getUserTransactionsForTransactionType() {
+    fun `getUserTransactionsForTransactionType should invoke LocalDataSource getUserTransactionsForTransactionType`() = runTest {
+        // Act
+        sysUnderTest.getUserTransactionsForTransactionType(TransactionType.EXPENSE)
+        // Assert
+        coVerify(atMost = 1) {
+            mockedUserTransactionsLocalDataSource.getUserTransactionsForTransactionType(
+                TransactionType.EXPENSE
+            )
+        }
     }
+
 
     @Test
     fun `getUserAllTransactions should invoke LocalDataSource getUserAllTransactions`() = runTest {
@@ -41,14 +48,20 @@ class UserTransactionsRepositoryImplTest {
 
     @Test
     fun `createUserTransaction should invoke LocalDataSource createUserTransaction()`() = runTest {
+        // Arrange
+        val transactionToAdd = Transaction(
+            "", TransactionType.EXPENSE, 100f, TimeMillis()
+        )
         // Act
         sysUnderTest.createUserTransaction(
-            Transaction(
-                "", TransactionType.EXPENSE, 100f, TimeMillis()
-            )
+            transactionToAdd
         )
         // Assert
-        coVerify(atMost = 1) { mockedUserTransactionsLocalDataSource.createUserTransaction() }
+        coVerify(atMost = 1) {
+            mockedUserTransactionsLocalDataSource.createUserTransaction(
+                transactionToAdd
+            )
+        }
     }
 
 }
