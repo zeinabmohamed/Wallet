@@ -2,12 +2,15 @@ package com.zm.org.balance.domain.usertransactions
 
 import com.zm.org.balance.data.model.Transaction
 import com.zm.org.balance.data.usertransactions.UserTransactionsRepository
+import io.mockk.coEvery
 import io.mockk.mockk
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 
 import org.junit.Assert.*
 
+@ExperimentalCoroutinesApi
 class GetUserTransactionsCategorizedByDateUseCaseTest {
 
     private val mockedUserTransactionsRepository = mockk<UserTransactionsRepository>()
@@ -19,7 +22,14 @@ class GetUserTransactionsCategorizedByDateUseCaseTest {
     @Test
     fun `when no transactions then get empty map`() =
         runTest {
-            assertEquals(emptyMap<Long,List<Transaction>>(), sysUnderTest.invoke())
+            // Arrange
+            coEvery { mockedUserTransactionsRepository.getUserAllTransactions() } returns emptyList()
+
+            // Act
+            val result = sysUnderTest.invoke()
+
+            // Assert
+            assertEquals(emptyMap<Long, List<Transaction>>(), result)
         }
 
     @Test
