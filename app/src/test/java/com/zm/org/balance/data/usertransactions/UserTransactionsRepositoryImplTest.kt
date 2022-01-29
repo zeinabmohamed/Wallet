@@ -24,6 +24,7 @@ class UserTransactionsRepositoryImplTest {
     @Before
     fun setup() {
         coEvery { mockedUserTransactionsLocalDataSource.createUserTransaction() } returns true
+        coEvery { mockedUserTransactionsLocalDataSource.getUserAllTransactions() } returns emptyList<Transaction>()
     }
 
     @Test
@@ -31,7 +32,11 @@ class UserTransactionsRepositoryImplTest {
     }
 
     @Test
-    fun getUserAllTransactions() {
+    fun `getUserAllTransactions should invoke LocalDataSource getUserAllTransactions`() = runTest {
+        // Act
+        sysUnderTest.getUserAllTransactions()
+        // Assert
+        coVerify(atMost = 1) { mockedUserTransactionsLocalDataSource.getUserAllTransactions() }
     }
 
     @Test

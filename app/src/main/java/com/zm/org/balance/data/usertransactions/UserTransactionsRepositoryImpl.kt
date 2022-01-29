@@ -17,7 +17,7 @@ internal class UserTransactionsRepositoryImpl(
     }
 
     override suspend fun getUserAllTransactions(): List<Transaction> {
-        TODO("Not yet implemented")
+        return userTransactionsLocalDataSource.getUserAllTransactions()
     }
 
     override suspend fun createUserTransaction(transaction: Transaction): Boolean {
