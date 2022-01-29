@@ -9,9 +9,17 @@ import com.zm.org.balance.data.model.TransactionType
 interface UserTransactionsRepository {
 
     /**
-     * Fetch all user transactions
+     * Fetch all user transactions filtered by [TransactionType]
      */
     suspend fun getUserTransactionsForTransactionType(transactionType: TransactionType): List<Transaction>
 
+    /**
+     * Fetch all user transactions
+     */
     suspend fun getUserAllTransactions(): List<Transaction>
+
+    /**
+     * Create new user transaction
+     */
+    suspend fun createUserTransaction(transaction: Transaction): Boolean
 }
