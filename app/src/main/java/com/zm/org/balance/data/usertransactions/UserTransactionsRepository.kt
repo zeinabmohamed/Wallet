@@ -12,4 +12,6 @@ interface UserTransactionsRepository {
      * Fetch all user transactions
      */
     suspend fun getUserTransactionsForTransactionType(transactionType: TransactionType): List<Transaction>
+
+    suspend fun getUserAllTransactions(): List<Transaction>
 }
