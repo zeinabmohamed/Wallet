@@ -10,7 +10,12 @@ class AddUserTransactionUseCase(
     private val userTransactionsRepository: UserTransactionsRepository
 ) {
 
+    /**
+     * Handle all validation rules in transaction before add
+     * - Title shouldn't be empty
+     */
     suspend operator fun invoke(transaction: Transaction): Boolean {
+        if (transaction.title.isNullOrBlank()) return false
         return userTransactionsRepository.createUserTransaction(transaction)
     }
 }

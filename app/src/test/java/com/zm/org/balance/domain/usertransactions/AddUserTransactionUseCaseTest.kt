@@ -45,6 +45,19 @@ class AddUserTransactionUseCaseTest {
     @Test
     fun `when add Transaction with empty Title should return result False`() =
         runTest {
+
+            // Act
+            val result = sysUnderTest.invoke(
+                Transaction(
+                    title = "",
+                    type = TransactionType.EXPENSE,
+                    amount = 44f,
+                    creationDateMillis = TimeMillis()
+                )
+            )
+
+            // Assert
+            assertFalse(result)
         }
 
     @Test
