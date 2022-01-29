@@ -13,7 +13,9 @@ class GetUserTransactionsCategorizedByDateUseCase(
 ) {
 
     suspend operator fun invoke(): Map<TimeMillis, List<Transaction>> {
-        return userTransactionsRepository.getUserAllTransactions().groupBy {
+        return userTransactionsRepository.getUserAllTransactions().sortedByDescending {
+            it.creationDateMillis.timeMillis
+        }.groupBy {
             it.creationDateMillis.toDayTimeStampMillis()
         }
     }

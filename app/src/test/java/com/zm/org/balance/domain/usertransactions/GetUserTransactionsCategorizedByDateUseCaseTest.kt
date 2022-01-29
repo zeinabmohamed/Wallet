@@ -46,7 +46,7 @@ class GetUserTransactionsCategorizedByDateUseCaseTest {
             val result = sysUnderTest.invoke()
 
             val expectedResult = mapOf(
-                Pair(TimeMillis(1643400000000), given29JanTransactions),
+                Pair(TimeMillis(1643400000000), given29JanOrderedDescTransactions),
             )
             // Assert
             assertEquals(expectedResult, result)
@@ -64,8 +64,26 @@ class GetUserTransactionsCategorizedByDateUseCaseTest {
             val result = sysUnderTest.invoke()
 
             val expectedResult = mapOf(
-                Pair(TimeMillis(1643400000000), given29JanTransactions),
-                Pair(TimeMillis(1643313600000), given28JanTransactions)
+                Pair(TimeMillis(1643400000000), given29JanOrderedDescTransactions),
+                Pair(TimeMillis(1643313600000), given28JanOrderedDescTransactions)
+            )
+            // Assert
+            assertEquals(expectedResult, result)
+        }
+
+    @Test
+    fun `when we have transaction in different days then get expected map of Transactions grouped by date ordered descending`() =
+        runTest {
+            // Arrange
+            coEvery { mockedUserTransactionsRepository.getUserAllTransactions() } returns
+                    shuffledDaysTransactions
+
+            // Act
+            val result = sysUnderTest.invoke()
+
+            val expectedResult = mapOf(
+                Pair(TimeMillis(1643400000000), given29JanOrderedDescTransactions),
+                Pair(TimeMillis(1643313600000), given28JanOrderedDescTransactions)
             )
             // Assert
             assertEquals(expectedResult, result)
@@ -125,5 +143,60 @@ class GetUserTransactionsCategorizedByDateUseCaseTest {
             TimeMillis(1643399940000)
         ) /* Fri Jan 28 2022 23:59:00 */
     )
+    private val given29JanOrderedDescTransactions = listOf(
+        Transaction(
+            "INCOME #3",
+            TransactionType.INCOME,
+            50f,
+            TimeMillis(1643486399000)
+        ), /* Sat Jan 29 2022 23:59:59 */
+        Transaction(
+            "INCOME #4",
+            TransactionType.INCOME,
+            50f,
+            TimeMillis(1643486340000)
+        ), /* Sat Jan 29 2022 19:59:00 */
+        Transaction(
+            "INCOME #2",
+            TransactionType.INCOME,
+            50f,
+            TimeMillis(1643464800000)
+        ), /* Sat Jan 29 2022 18:00:00 */
+        Transaction(
+            "INCOME #1",
+            TransactionType.EXPENSE,
+            100f,
+            TimeMillis(1643439600000)
+        ), /* Sat Jan 29 2022 11:00:00 */
+    )
+    private val given28JanOrderedDescTransactions = listOf(
+        Transaction(
+            "INCOME #3",
+            TransactionType.INCOME,
+            50f,
+            TimeMillis(1643399999000)
+        ), /* Fri Jan 28 2022 23:59:59 */
+        Transaction(
+            "INCOME #4",
+            TransactionType.INCOME,
+            50f,
+            TimeMillis(1643399940000)
+        ), /* Fri Jan 28 2022 23:59:00 */
+        Transaction(
+            "INCOME #2",
+            TransactionType.INCOME,
+            50f,
+            TimeMillis(1643378400000)
+        ), /* Fri Jan 28 2022 18:00:00 */
+        Transaction(
+            "INCOME #1",
+            TransactionType.EXPENSE,
+            100f,
+            TimeMillis(1643353200000)
+        ), /* Fri Jan 28 2022 11:00:00 */
+    )
+    private val shuffledDaysTransactions = (given29JanTransactions + given28JanTransactions).shuffled()
+
+
     //endregion
 }
