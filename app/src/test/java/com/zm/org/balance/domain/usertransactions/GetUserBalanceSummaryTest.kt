@@ -70,7 +70,7 @@ class GetUserBalanceSummaryTest {
             val result = sysUnderTest.invoke()
             // Assert
             val expectedResult = UserBalanceSummary(
-                50f, 100f, 50f
+                100f, 10f, -90f
             )
             assertEquals(expectedResult, result)
         }
