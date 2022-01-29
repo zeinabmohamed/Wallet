@@ -39,12 +39,15 @@ class GetUserTransactionsCategorizedByDateUseCaseTest {
     fun `when transactions created in same day Jan 29 2022 then should be in same day group in result map`() =
         runTest {
             // Arrange
-            coEvery { mockedUserTransactionsRepository.getUserAllTransactions() } returns given29JanTransactions
+            coEvery { mockedUserTransactionsRepository.getUserAllTransactions() } returns
+                    given29JanTransactions
 
             // Act
             val result = sysUnderTest.invoke()
 
-            val expectedResult = mapOf(Pair(TimeMillis(1643400000000), given29JanTransactions))
+            val expectedResult = mapOf(
+                Pair(TimeMillis(1643400000000), given29JanTransactions),
+            )
             // Assert
             assertEquals(expectedResult, result)
         }
@@ -53,6 +56,19 @@ class GetUserTransactionsCategorizedByDateUseCaseTest {
     @Test
     fun `when we have transaction in different days then get expected map of Transactions grouped by date`() =
         runTest {
+            // Arrange
+            coEvery { mockedUserTransactionsRepository.getUserAllTransactions() } returns
+                    given29JanTransactions + given28JanTransactions
+
+            // Act
+            val result = sysUnderTest.invoke()
+
+            val expectedResult = mapOf(
+                Pair(TimeMillis(1643400000000), given29JanTransactions),
+                Pair(TimeMillis(1643313600000), given28JanTransactions)
+            )
+            // Assert
+            assertEquals(expectedResult, result)
         }
 
     //region utils
@@ -63,26 +79,51 @@ class GetUserTransactionsCategorizedByDateUseCaseTest {
             TransactionType.EXPENSE,
             100f,
             TimeMillis(1643439600000)
-        ) /* Sat Jan 29 2022 07:00:00 */,
+        ) /* Sat Jan 29 2022 11:00:00 */,
         Transaction(
             "INCOME #2",
             TransactionType.INCOME,
             50f,
             TimeMillis(1643464800000)
-        ) /* Sat Jan 29 2022 14:00:00 */,
+        ) /* Sat Jan 29 2022 18:00:00 */,
         Transaction(
-            "INCOME #2",
+            "INCOME #3",
             TransactionType.INCOME,
             50f,
             TimeMillis(1643486399000)
-        ) /* Sat Jan 29 2022 19:59:59 */,
+        ) /* Sat Jan 29 2022 23:59:59 */,
         Transaction(
-            "INCOME #2",
+            "INCOME #4",
             TransactionType.INCOME,
             50f,
             TimeMillis(1643486340000)
         ) /* Sat Jan 29 2022 19:59:00 */
     )
-
+    private val given28JanTransactions = listOf(
+        Transaction(
+            "INCOME #1",
+            TransactionType.EXPENSE,
+            100f,
+            TimeMillis(1643353200000)
+        ) /* Fri Jan 28 2022 11:00:00 */,
+        Transaction(
+            "INCOME #2",
+            TransactionType.INCOME,
+            50f,
+            TimeMillis(1643378400000)
+        ) /* Fri Jan 28 2022 18:00:00 */,
+        Transaction(
+            "INCOME #3",
+            TransactionType.INCOME,
+            50f,
+            TimeMillis(1643399999000)
+        ) /* Fri Jan 28 2022 23:59:59 */,
+        Transaction(
+            "INCOME #4",
+            TransactionType.INCOME,
+            50f,
+            TimeMillis(1643399940000)
+        ) /* Fri Jan 28 2022 23:59:00 */
+    )
     //endregion
 }
