@@ -64,5 +64,36 @@ class AddUserTransactionUseCaseTest {
     fun `when add Transaction with 0 amount should return result False`() =
         runTest {
 
+            // Act
+            val result = sysUnderTest.invoke(
+                Transaction(
+                    title = "EXPENSE #1",
+                    type = TransactionType.EXPENSE,
+                    amount = 0f,
+                    creationDateMillis = TimeMillis()
+                )
+            )
+
+            // Assert
+            assertFalse(result)
         }
+
+    @Test
+    fun `when add Transaction with -ve amount should return result False`() =
+        runTest {
+
+            // Act
+            val result = sysUnderTest.invoke(
+                Transaction(
+                    title = "EXPENSE #1",
+                    type = TransactionType.EXPENSE,
+                    amount = -100f,
+                    creationDateMillis = TimeMillis()
+                )
+            )
+
+            // Assert
+            assertFalse(result)
+        }
+
 }
