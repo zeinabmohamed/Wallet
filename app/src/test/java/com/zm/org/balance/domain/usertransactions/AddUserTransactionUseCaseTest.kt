@@ -47,7 +47,7 @@ class AddUserTransactionUseCaseTest {
     @Test
     fun `when add Transaction with empty Title should return result False`() {
         // Act , Assert
-        val exceptionFailure = org.junit.Assert.assertThrows(
+        val exceptionFailure = assertThrows(
             java.lang.AssertionError::class.java
         ) {
             runTest {
@@ -70,7 +70,7 @@ class AddUserTransactionUseCaseTest {
     @Test
     fun `when add Transaction with 0 amount should return result False`() {
         // Act , Assert
-        val exceptionFailure = org.junit.Assert.assertThrows(
+        val exceptionFailure = assertThrows(
             java.lang.AssertionError::class.java
         ) {
             runTest {
