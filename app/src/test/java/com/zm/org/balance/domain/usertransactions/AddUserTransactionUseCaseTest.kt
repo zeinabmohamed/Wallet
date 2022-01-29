@@ -11,6 +11,7 @@ import org.junit.Test
 
 import org.junit.Assert.*
 import org.junit.Before
+import java.util.*
 
 class AddUserTransactionUseCaseTest {
     private val mockedUserTransactionsRepository = mockk<UserTransactionsRepository>()
@@ -89,6 +90,27 @@ class AddUserTransactionUseCaseTest {
                     type = TransactionType.EXPENSE,
                     amount = -100f,
                     creationDateMillis = TimeMillis()
+                )
+            )
+
+            // Assert
+            assertFalse(result)
+        }
+
+    @Test
+    fun `when add Transaction with future date should return result False`() =
+        runTest {
+
+            // Act
+            val result = sysUnderTest.invoke(
+                Transaction(
+                    title = "EXPENSE #1",
+                    type = TransactionType.EXPENSE,
+                    amount = 100f,
+                    creationDateMillis = TimeMillis(Calendar.getInstance().run {
+                        this.set(Calendar.YEAR, 2023)
+                        this
+                    }.timeInMillis)
                 )
             )
 
