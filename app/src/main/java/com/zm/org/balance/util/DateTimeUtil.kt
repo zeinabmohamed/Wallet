@@ -1,5 +1,6 @@
 package com.zm.org.balance.util
 
+import androidx.room.ColumnInfo
 import java.util.Calendar
 import java.util.TimeZone
 

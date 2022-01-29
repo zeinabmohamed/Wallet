@@ -20,7 +20,7 @@ class UserTransactionsRepositoryImplTest {
 
     @Before
     fun setup() {
-        coEvery { mockedUserTransactionsLocalDataSource.createUserTransaction(any()) } returns true
+        coEvery { mockedUserTransactionsLocalDataSource.createUserTransaction(any()) } returns Unit
         coEvery { mockedUserTransactionsLocalDataSource.getUserAllTransactions() } returns emptyList()
         coEvery { mockedUserTransactionsLocalDataSource.getUserTransactionsForTransactionType(any()) } returns emptyList()
     }

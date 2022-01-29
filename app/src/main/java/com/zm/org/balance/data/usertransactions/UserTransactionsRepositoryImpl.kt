@@ -9,7 +9,7 @@ import com.zm.org.balance.data.usertransactions.local.UserTransactionsLocalDataS
  * for now we only support local datasource and most of logic here bridging for the LocalDataSource
  */
 internal class UserTransactionsRepositoryImpl(
-    private val userTransactionsLocalDataSource: UserTransactionsLocalDataSource
+    private val userTransactionsLocalDataSource: UserTransactionsLocalDataSource,
 ) : UserTransactionsRepository {
 
     override suspend fun getUserTransactionsForTransactionType(transactionType: TransactionType): List<Transaction> {
@@ -21,6 +21,7 @@ internal class UserTransactionsRepositoryImpl(
     }
 
     override suspend fun createUserTransaction(transaction: Transaction): Boolean {
-        return userTransactionsLocalDataSource.createUserTransaction(transaction)
+        userTransactionsLocalDataSource.createUserTransaction(transaction)
+        return true
     }
 }
