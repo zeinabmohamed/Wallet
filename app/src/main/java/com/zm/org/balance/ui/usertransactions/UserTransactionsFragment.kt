@@ -25,7 +25,7 @@ import kotlinx.coroutines.flow.collect
 @AndroidEntryPoint
 class UserTransactionsFragment : Fragment() {
 
-    val viewModel: UserTransactionsViewModel by viewModels()
+    private val viewModel: UserTransactionsViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -52,9 +52,7 @@ class UserTransactionsFragment : Fragment() {
             when (transactionsHistoryListViewState) {
                 LoadingState -> LoadingStateView()
             }
-
         }
-
     }
 
 
