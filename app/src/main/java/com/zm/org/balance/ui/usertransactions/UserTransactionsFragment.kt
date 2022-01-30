@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
@@ -20,7 +19,6 @@ import androidx.fragment.app.viewModels
 import com.zm.org.balance.R
 import com.zm.org.balance.ui.usertransactions.TransactionsHistoryViewState.*
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class UserTransactionsFragment : Fragment() {
@@ -33,7 +31,7 @@ class UserTransactionsFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View = ComposeView(requireContext()).apply {
         setContent {
-            val state = viewModel.viewStateLiveData.value
+            val state = viewModel.viewState.value
             UserTransactionsView(state)
         }
     }
@@ -50,7 +48,16 @@ class UserTransactionsFragment : Fragment() {
             }
         ) {
             when (transactionsHistoryListViewState) {
-                LoadingState -> LoadingStateView()
+                is LoadingState -> LoadingStateView()
+                is TransactionsHistoryState ->
+                    Column {
+                        transactionsHistoryListViewState.data?.first?.let { balanceHistory ->
+                            BalanceSummery(balanceHistory)
+                        }
+                        transactionsHistoryListViewState.data?.second?.let { transactionsHistory ->
+                            TransactionsHistoryList(transactionsHistory)
+                        }
+                    }
             }
         }
     }
