@@ -1,6 +1,7 @@
 package com.zm.org.balance.domain.usertransactions
 
-import com.zm.org.balance.data.model.Transaction
+import com.zm.org.balance.data.model.TransactionEntity
+import com.zm.org.balance.domain.entity.Transaction
 import com.zm.org.balance.data.model.TransactionType
 import com.zm.org.balance.data.usertransactions.UserTransactionsRepository
 import com.zm.org.balance.domain.entity.UserBalanceSummary
@@ -29,8 +30,8 @@ class GetUserBalanceSummaryTest {
                     TransactionType.INCOME
                 )
             } returns listOf(
-                Transaction("INCOME #1", TransactionType.INCOME, 100f, TimeMillis()),
-                Transaction("INCOME #2", TransactionType.INCOME, 50f, TimeMillis())
+                TransactionEntity("INCOME #1", TransactionType.INCOME, 100f, TimeMillis()),
+                TransactionEntity("INCOME #2", TransactionType.INCOME, 50f, TimeMillis())
             )
 
             coEvery {
@@ -38,8 +39,8 @@ class GetUserBalanceSummaryTest {
                     TransactionType.EXPENSE
                 )
             } returns listOf(
-                Transaction("EXPENSE #1", TransactionType.EXPENSE, 50f, TimeMillis()),
-                Transaction("EXPENSE #2", TransactionType.EXPENSE, 20f, TimeMillis())
+                TransactionEntity("EXPENSE #1", TransactionType.EXPENSE, 50f, TimeMillis()),
+                TransactionEntity("EXPENSE #2", TransactionType.EXPENSE, 20f, TimeMillis())
             )
 
             // Act
@@ -59,13 +60,13 @@ class GetUserBalanceSummaryTest {
                 mockedUserTransactionsRepository.getUserTransactionsForTransactionType(
                     TransactionType.INCOME
                 )
-            } returns listOf(Transaction("INCOME #1", TransactionType.INCOME, 10f, TimeMillis()))
+            } returns listOf(TransactionEntity("INCOME #1", TransactionType.INCOME, 10f, TimeMillis()))
 
             coEvery {
                 mockedUserTransactionsRepository.getUserTransactionsForTransactionType(
                     TransactionType.EXPENSE
                 )
-            } returns listOf(Transaction("EXPENSE #1", TransactionType.EXPENSE, 100f, TimeMillis()))
+            } returns listOf(TransactionEntity("EXPENSE #1", TransactionType.EXPENSE, 100f, TimeMillis()))
 
             // Act
             val result = sysUnderTest.invoke()
@@ -84,13 +85,13 @@ class GetUserBalanceSummaryTest {
                 mockedUserTransactionsRepository.getUserTransactionsForTransactionType(
                     TransactionType.INCOME
                 )
-            } returns listOf(Transaction("INCOME #1", TransactionType.INCOME, 100f, TimeMillis()))
+            } returns listOf(TransactionEntity("INCOME #1", TransactionType.INCOME, 100f, TimeMillis()))
 
             coEvery {
                 mockedUserTransactionsRepository.getUserTransactionsForTransactionType(
                     TransactionType.EXPENSE
                 )
-            } returns listOf(Transaction("EXPENSE #1", TransactionType.EXPENSE, 10f, TimeMillis()))
+            } returns listOf(TransactionEntity("EXPENSE #1", TransactionType.EXPENSE, 10f, TimeMillis()))
 
             // Act
             val result = sysUnderTest.invoke()

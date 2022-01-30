@@ -1,6 +1,7 @@
 package com.zm.org.balance.data.usertransactions
 
-import com.zm.org.balance.data.model.Transaction
+import com.zm.org.balance.data.model.TransactionEntity
+import com.zm.org.balance.domain.entity.Transaction
 import com.zm.org.balance.data.model.TransactionType
 import com.zm.org.balance.data.usertransactions.local.UserTransactionsLocalDataSource
 import com.zm.org.balance.util.TimeMillis
@@ -49,7 +50,7 @@ class UserTransactionsRepositoryImplTest {
     @Test
     fun `createUserTransaction should invoke LocalDataSource createUserTransaction()`() = runTest {
         // Arrange
-        val transactionToAdd = Transaction(
+        val transactionToAdd = TransactionEntity(
             "", TransactionType.EXPENSE, 100f, TimeMillis()
         )
         // Act

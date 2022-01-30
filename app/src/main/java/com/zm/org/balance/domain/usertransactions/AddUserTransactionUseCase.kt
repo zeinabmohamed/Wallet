@@ -1,14 +1,15 @@
 package com.zm.org.balance.domain.usertransactions
 
-import com.zm.org.balance.data.model.Transaction
 import com.zm.org.balance.data.usertransactions.UserTransactionsRepository
+import com.zm.org.balance.domain.entity.Transaction
 import java.util.*
 
 /**
  * Responsible to Save user transaction
  */
 class AddUserTransactionUseCase(
-    private val userTransactionsRepository: UserTransactionsRepository
+    private val userTransactionsRepository: UserTransactionsRepository,
+    private val transactionMapper: TransactionMapper,
 ) {
 
     /**
@@ -28,6 +29,7 @@ class AddUserTransactionUseCase(
         assert((Date(transaction.creationDateMillis.timeMillis).after(Date())).not()) {
             "Invalid transaction creationDate >> ${transaction.creationDateMillis.timeMillis}"
         }
-        return userTransactionsRepository.createUserTransaction(transaction)
+        return userTransactionsRepository.createUserTransaction(transactionMapper.toTransactionEntity(transaction))
     }
 }
+

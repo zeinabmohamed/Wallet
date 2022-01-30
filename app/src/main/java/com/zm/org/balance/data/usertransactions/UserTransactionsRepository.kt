@@ -1,6 +1,7 @@
 package com.zm.org.balance.data.usertransactions
 
-import com.zm.org.balance.data.model.Transaction
+import com.zm.org.balance.data.model.TransactionEntity
+import com.zm.org.balance.domain.entity.Transaction
 import com.zm.org.balance.data.model.TransactionType
 
 /**
@@ -11,15 +12,15 @@ interface UserTransactionsRepository {
     /**
      * Fetch all user transactions filtered by [TransactionType]
      */
-    suspend fun getUserTransactionsForTransactionType(transactionType: TransactionType): List<Transaction>
+    suspend fun getUserTransactionsForTransactionType(transactionType: TransactionType): List<TransactionEntity>
 
     /**
      * Fetch all user transactions
      */
-    suspend fun getUserAllTransactions(): List<Transaction>
+    suspend fun getUserAllTransactions(): List<TransactionEntity>
 
     /**
      * Create new user transaction
      */
-    suspend fun createUserTransaction(transaction: Transaction): Boolean
+    suspend fun createUserTransaction(transaction: TransactionEntity): Boolean
 }

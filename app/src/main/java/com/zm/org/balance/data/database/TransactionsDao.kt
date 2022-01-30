@@ -1,22 +1,22 @@
-package com.zm.org.balance.data.usertransactions.local
+package com.zm.org.balance.data.database
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.zm.org.balance.data.model.Transaction
+import com.zm.org.balance.data.model.TransactionEntity
 import com.zm.org.balance.data.model.TransactionType
 
 @Dao
 interface TransactionsDao {
     @Query("SELECT * FROM `user-transactions` WHERE transaction_type == :transactionType")
-    suspend fun getByTransactionType(transactionType: TransactionType): List<Transaction>
+    suspend fun getByTransactionType(transactionType: TransactionType): List<TransactionEntity>
 
     @Query("SELECT * FROM `user-transactions`")
-    suspend fun getAll(): List<Transaction>
+    suspend fun getAll(): List<TransactionEntity>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insert(transaction: Transaction)
+    suspend fun insert(transaction: TransactionEntity)
 
     @Query("DELETE FROM `user-transactions`")
     suspend fun deleteAll()

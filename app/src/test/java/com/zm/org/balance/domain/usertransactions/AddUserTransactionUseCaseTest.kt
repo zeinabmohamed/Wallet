@@ -1,6 +1,6 @@
 package com.zm.org.balance.domain.usertransactions
 
-import com.zm.org.balance.data.model.Transaction
+import com.zm.org.balance.domain.entity.Transaction
 import com.zm.org.balance.data.model.TransactionType
 import com.zm.org.balance.data.usertransactions.UserTransactionsRepository
 import com.zm.org.balance.util.TimeMillis
@@ -18,7 +18,8 @@ class AddUserTransactionUseCaseTest {
     private val mockedUserTransactionsRepository = mockk<UserTransactionsRepository>()
 
     private val sysUnderTest = AddUserTransactionUseCase(
-        userTransactionsRepository = mockedUserTransactionsRepository
+        userTransactionsRepository = mockedUserTransactionsRepository,
+        transactionMapper = TransactionMapper()
     )
 
     @Before

@@ -1,6 +1,7 @@
 package com.zm.org.balance.domain.usertransactions
 
-import com.zm.org.balance.data.model.Transaction
+import com.zm.org.balance.data.model.TransactionEntity
+import com.zm.org.balance.domain.entity.Transaction
 import com.zm.org.balance.data.model.TransactionType
 import com.zm.org.balance.data.usertransactions.UserTransactionsRepository
 import com.zm.org.balance.util.TimeMillis
@@ -18,7 +19,8 @@ class GetUserTransactionsCategorizedByDateUseCaseTest {
     private val mockedUserTransactionsRepository = mockk<UserTransactionsRepository>()
 
     private val sysUnderTest = GetUserTransactionsCategorizedByDateUseCase(
-        mockedUserTransactionsRepository
+        mockedUserTransactionsRepository,
+        transactionMapper = TransactionMapper()
     )
 
     @Test
@@ -46,7 +48,7 @@ class GetUserTransactionsCategorizedByDateUseCaseTest {
             val result = sysUnderTest.invoke()
 
             val expectedResult = mapOf(
-                Pair(TimeMillis(1643400000000), given29JanOrderedDescTransactions),
+                Pair(TimeMillis(1643400000000), result29JanOrderedDescTransactions),
             )
             // Assert
             assertEquals(expectedResult, result)
@@ -64,8 +66,8 @@ class GetUserTransactionsCategorizedByDateUseCaseTest {
             val result = sysUnderTest.invoke()
 
             val expectedResult = mapOf(
-                Pair(TimeMillis(1643400000000), given29JanOrderedDescTransactions),
-                Pair(TimeMillis(1643313600000), given28JanOrderedDescTransactions)
+                Pair(TimeMillis(1643400000000), result29JanOrderedDescTransactions),
+                Pair(TimeMillis(1643313600000), result28JanOrderedDescTransactions)
             )
             // Assert
             assertEquals(expectedResult, result)
@@ -82,8 +84,8 @@ class GetUserTransactionsCategorizedByDateUseCaseTest {
             val result = sysUnderTest.invoke()
 
             val expectedResult = mapOf(
-                Pair(TimeMillis(1643400000000), given29JanOrderedDescTransactions),
-                Pair(TimeMillis(1643313600000), given28JanOrderedDescTransactions)
+                Pair(TimeMillis(1643400000000), result29JanOrderedDescTransactions),
+                Pair(TimeMillis(1643313600000), result28JanOrderedDescTransactions)
             )
             // Assert
             assertEquals(expectedResult, result)
@@ -92,25 +94,25 @@ class GetUserTransactionsCategorizedByDateUseCaseTest {
     //region utils
 
     private val given29JanTransactions = listOf(
-        Transaction(
+        TransactionEntity(
             "INCOME #1",
             TransactionType.EXPENSE,
             100f,
             TimeMillis(1643439600000)
         ) /* Sat Jan 29 2022 11:00:00 */,
-        Transaction(
+        TransactionEntity(
             "INCOME #2",
             TransactionType.INCOME,
             50f,
             TimeMillis(1643464800000)
         ) /* Sat Jan 29 2022 18:00:00 */,
-        Transaction(
+        TransactionEntity(
             "INCOME #3",
             TransactionType.INCOME,
             50f,
             TimeMillis(1643486399000)
         ) /* Sat Jan 29 2022 23:59:59 */,
-        Transaction(
+        TransactionEntity(
             "INCOME #4",
             TransactionType.INCOME,
             50f,
@@ -118,32 +120,34 @@ class GetUserTransactionsCategorizedByDateUseCaseTest {
         ) /* Sat Jan 29 2022 19:59:00 */
     )
     private val given28JanTransactions = listOf(
-        Transaction(
+        TransactionEntity(
             "INCOME #1",
             TransactionType.EXPENSE,
             100f,
             TimeMillis(1643353200000)
         ) /* Fri Jan 28 2022 11:00:00 */,
-        Transaction(
+        TransactionEntity(
             "INCOME #2",
             TransactionType.INCOME,
             50f,
             TimeMillis(1643378400000)
         ) /* Fri Jan 28 2022 18:00:00 */,
-        Transaction(
+        TransactionEntity(
             "INCOME #3",
             TransactionType.INCOME,
             50f,
             TimeMillis(1643399999000)
         ) /* Fri Jan 28 2022 23:59:59 */,
-        Transaction(
+        TransactionEntity(
             "INCOME #4",
             TransactionType.INCOME,
             50f,
             TimeMillis(1643399940000)
         ) /* Fri Jan 28 2022 23:59:00 */
     )
-    private val given29JanOrderedDescTransactions = listOf(
+    private val shuffledDaysTransactions = (given29JanTransactions + given28JanTransactions).shuffled()
+
+    private val result29JanOrderedDescTransactions = listOf(
         Transaction(
             "INCOME #3",
             TransactionType.INCOME,
@@ -169,7 +173,7 @@ class GetUserTransactionsCategorizedByDateUseCaseTest {
             TimeMillis(1643439600000)
         ), /* Sat Jan 29 2022 11:00:00 */
     )
-    private val given28JanOrderedDescTransactions = listOf(
+    private val result28JanOrderedDescTransactions = listOf(
         Transaction(
             "INCOME #3",
             TransactionType.INCOME,
@@ -195,7 +199,7 @@ class GetUserTransactionsCategorizedByDateUseCaseTest {
             TimeMillis(1643353200000)
         ), /* Fri Jan 28 2022 11:00:00 */
     )
-    private val shuffledDaysTransactions = (given29JanTransactions + given28JanTransactions).shuffled()
+
 
 
     //endregion

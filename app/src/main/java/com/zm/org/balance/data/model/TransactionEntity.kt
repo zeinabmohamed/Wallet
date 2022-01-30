@@ -1,11 +1,12 @@
 package com.zm.org.balance.data.model
 
-import androidx.annotation.Nullable
-import androidx.room.*
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.zm.org.balance.util.TimeMillis
 
 @Entity(tableName = "user-transactions")
-data class Transaction (
+data class TransactionEntity (
     @ColumnInfo(name = "transaction_title")
     var title: String = "",
     @ColumnInfo(name = "transaction_type")

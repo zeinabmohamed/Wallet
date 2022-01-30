@@ -4,7 +4,8 @@ import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.zm.org.balance.data.database.AppDatabase
-import com.zm.org.balance.data.model.Transaction
+import com.zm.org.balance.data.database.TransactionsDao
+import com.zm.org.balance.data.model.TransactionEntity
 import com.zm.org.balance.data.model.TransactionType
 import com.zm.org.balance.util.TimeMillis
 import kotlinx.coroutines.test.runTest
@@ -36,7 +37,7 @@ class UserTransactionsLocalDataSourceTest {
     @Throws(Exception::class)
     fun createUserTransaction_insertNewTransactionToDB() = runTest {
         // Arrange
-        val transaction = Transaction(
+        val transaction = TransactionEntity(
             "INCOME #1", TransactionType.EXPENSE, 100f,
             TimeMillis(111)
         )
@@ -46,7 +47,7 @@ class UserTransactionsLocalDataSourceTest {
 
         // Assert
         val result = transactionsDao.getAll()
-        assertEquals(listOf(Transaction(
+        assertEquals(listOf(TransactionEntity(
             "INCOME #1", TransactionType.EXPENSE, 100f,
             TimeMillis(111)
         )), result)
@@ -57,17 +58,17 @@ class UserTransactionsLocalDataSourceTest {
     fun getUserAllTransactions_ReturnAllTransactionsInDB() = runTest {
         // Arrange
         sysUnderTest.createUserTransaction(
-            Transaction("INCOME #1", TransactionType.INCOME, 10f, TimeMillis(111))
+            TransactionEntity("INCOME #1", TransactionType.INCOME, 10f, TimeMillis(111))
         )
         sysUnderTest.createUserTransaction(
-            Transaction("INCOME #1", TransactionType.EXPENSE, 20f, TimeMillis(222))
+            TransactionEntity("INCOME #1", TransactionType.EXPENSE, 20f, TimeMillis(222))
         )
 
         // Act
         val result = transactionsDao.getAll()
         assertEquals(listOf(
-            Transaction("INCOME #1", TransactionType.INCOME, 10f, TimeMillis(111)),
-            Transaction("INCOME #1", TransactionType.EXPENSE, 20f, TimeMillis(222))
+            TransactionEntity("INCOME #1", TransactionType.INCOME, 10f, TimeMillis(111)),
+            TransactionEntity("INCOME #1", TransactionType.EXPENSE, 20f, TimeMillis(222))
         ), result)
     }
 
@@ -75,16 +76,16 @@ class UserTransactionsLocalDataSourceTest {
     fun getUserTransactionsForTransactionType_ReturnOnlyFilteredTypeTransactions() = runTest {
         // Arrange
         sysUnderTest.createUserTransaction(
-            Transaction("INCOME #1", TransactionType.INCOME, 10f, TimeMillis(111))
+            TransactionEntity("INCOME #1", TransactionType.INCOME, 10f, TimeMillis(111))
         )
         sysUnderTest.createUserTransaction(
-            Transaction("INCOME #1", TransactionType.EXPENSE, 20f, TimeMillis(222))
+            TransactionEntity("INCOME #1", TransactionType.EXPENSE, 20f, TimeMillis(222))
         )
 
         // Act
         val result = transactionsDao.getByTransactionType(TransactionType.INCOME)
         assertEquals(listOf(
-            Transaction("INCOME #1", TransactionType.INCOME, 10f, TimeMillis(111)),
+            TransactionEntity("INCOME #1", TransactionType.INCOME, 10f, TimeMillis(111)),
         ), result)
 
     }
