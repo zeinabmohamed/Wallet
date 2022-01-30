@@ -19,8 +19,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.zm.org.balance.R
 import com.zm.org.balance.ui.usertransactions.TransactionsHistoryViewState.*
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 
+@AndroidEntryPoint
 class UserTransactionsFragment : Fragment() {
 
     val viewModel: UserTransactionsViewModel by viewModels()
@@ -40,20 +42,19 @@ class UserTransactionsFragment : Fragment() {
     fun UserTransactionsView(
         transactionsHistoryListViewState: TransactionsHistoryViewState,
     ) {
-        MaterialTheme {
-            Scaffold(
-                topBar = {
-                    TopAppBar(title = {
-                        Text("")
-                    })
-                }
-            ) {
-                when (transactionsHistoryListViewState) {
-                    LoadingState -> LoadingStateView()
-                }
-
+        Scaffold(
+            topBar = {
+                TopAppBar(title = {
+                    Text(stringResource(R.string.user_transaction_history))
+                })
             }
+        ) {
+            when (transactionsHistoryListViewState) {
+                LoadingState -> LoadingStateView()
+            }
+
         }
+
     }
 
 

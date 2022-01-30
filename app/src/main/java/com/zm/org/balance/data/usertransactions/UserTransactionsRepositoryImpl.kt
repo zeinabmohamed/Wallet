@@ -4,12 +4,13 @@ import com.zm.org.balance.data.model.TransactionEntity
 import com.zm.org.balance.domain.entity.Transaction
 import com.zm.org.balance.data.model.TransactionType
 import com.zm.org.balance.data.usertransactions.local.UserTransactionsLocalDataSource
+import javax.inject.Inject
 
 /**
  * [UserTransactionsRepository] responsible to fetch the required data from local or Remote DataSource
  * for now we only support local datasource and most of logic here bridging for the LocalDataSource
  */
-internal class UserTransactionsRepositoryImpl(
+internal class UserTransactionsRepositoryImpl @Inject constructor(
     private val userTransactionsLocalDataSource: UserTransactionsLocalDataSource,
 ) : UserTransactionsRepository {
 

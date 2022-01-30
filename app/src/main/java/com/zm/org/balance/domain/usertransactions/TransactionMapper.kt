@@ -2,8 +2,9 @@ package com.zm.org.balance.domain.usertransactions
 
 import com.zm.org.balance.data.model.TransactionEntity
 import com.zm.org.balance.domain.entity.Transaction
+import javax.inject.Inject
 
-class TransactionMapper {
+class TransactionMapper @Inject constructor() {
 
     fun toTransactionEntity(transaction: Transaction) = TransactionEntity(
         title = transaction.title,

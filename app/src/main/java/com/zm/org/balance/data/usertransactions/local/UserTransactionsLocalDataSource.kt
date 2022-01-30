@@ -3,8 +3,9 @@ package com.zm.org.balance.data.usertransactions.local
 import com.zm.org.balance.data.database.TransactionsDao
 import com.zm.org.balance.data.model.TransactionEntity
 import com.zm.org.balance.data.model.TransactionType
+import javax.inject.Inject
 
-internal class UserTransactionsLocalDataSource(private val transactionsDao: TransactionsDao) {
+internal class UserTransactionsLocalDataSource @Inject constructor(private val transactionsDao: TransactionsDao) {
     suspend fun createUserTransaction(transactionToAdd: TransactionEntity) {
         return transactionsDao.insert(transactionToAdd)
     }
