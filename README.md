@@ -32,7 +32,7 @@ Testing
 - For functionality test : covered by unit testing
 - For UiTest flow : covered by Instrumentation testing
 
-<img src="screenshots/uitests.png" width="400" height="400">
+<img src="screenshots/uitests.gif" width="400" height="400">
 
 Dependencies
 -------
