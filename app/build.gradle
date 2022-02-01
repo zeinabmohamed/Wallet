@@ -9,13 +9,13 @@ android {
     compileSdk 31
 
     defaultConfig {
-        applicationId "com.zm.org.balance"
+        applicationId "com.zm.org.wallet"
         minSdk 22
         targetSdk 31
         versionCode 1
         versionName "1.0"
 
-        testInstrumentationRunner "com.zm.org.balance.di.CustomTestRunner"
+        testInstrumentationRunner "com.zm.org.wallet.di.CustomTestRunner"
     }
 
     buildTypes {
