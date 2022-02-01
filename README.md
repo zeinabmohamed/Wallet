@@ -49,16 +49,16 @@ Dependencies
 - 'androidx.navigation:navigation-ui-ktx:2.4.0'
 - 'androidx.navigation:navigation-fragment-ktx:2.4.0'
 
-## DI
+#### DI
 - 'com.google.dagger:hilt-android:2.40.4'
 - 'com.google.dagger:hilt-compiler:2.38.1'
-## Database
+#### Database
 - 'androidx.room:room-runtime:2.4.1'
 - 'androidx.room:room-compiler:2.4.1'
 - 'androidx.room:room-compiler:2.4.1'
 - 'androidx.room:room-ktx:2.4.1'
 
-## Testing
+#### Testing
 - 'junit:junit:4.13.2'
 - 'androidx.test.ext:junit:1.1.3'
 - 'androidx.test.espresso:espresso-core:3.4.0'
