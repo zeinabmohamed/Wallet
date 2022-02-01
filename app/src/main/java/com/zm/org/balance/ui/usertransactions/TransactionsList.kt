@@ -14,24 +14,32 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import com.zm.org.balance.R
 import com.zm.org.balance.data.model.TransactionType
 import com.zm.org.balance.domain.entity.Transaction
+import com.zm.org.balance.util.MoneyFormatter
 import com.zm.org.balance.util.TimeMillis
 import java.util.*
 
 @Composable
-internal fun TransactionsHistoryList(transactionHistory: Map<TimeMillis, List<Transaction>>) {
+internal fun TransactionsHistoryList(
+    moneyFormatter: MoneyFormatter,
+    transactionHistory: Map<TimeMillis, List<Transaction>>,
+) {
     LazyColumn(state = rememberLazyListState()) {
         items(transactionHistory.toList()) { transactionsForDay ->
-            TransactionsHistoryRow(transactionsForDay.first, transactionsForDay.second)
+            TransactionsHistoryRow(moneyFormatter,
+                transactionsForDay.first,
+                transactionsForDay.second)
         }
     }
 }
 
 @Composable
 internal fun TransactionsHistoryRow(
+    moneyFormatter: MoneyFormatter,
     dayTimeMillis: TimeMillis,
     transactionList: List<Transaction>,
 ) {
@@ -53,7 +61,7 @@ internal fun TransactionsHistoryRow(
             )
             Column {
                 transactionList.forEachIndexed { index, transaction ->
-                    TransactionRow(transaction)
+                    TransactionRow(moneyFormatter, transaction)
                     if (index != (transactionList.size - 1)) {
                         Divider(
                             modifier = Modifier.fillMaxWidth()
@@ -69,14 +77,20 @@ internal fun TransactionsHistoryRow(
 
 
 @Composable
-internal fun TransactionRow(transaction: Transaction) {
+internal fun TransactionRow(moneyFormatter: MoneyFormatter, transaction: Transaction) {
     Row(
         modifier = Modifier.fillMaxWidth().padding(dimensionResource(R.dimen.padding_medium)),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        Text(transaction.title)
+        Text(transaction.title,
+            modifier = Modifier.padding(end = dimensionResource(R.dimen.padding_medium)),
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis)
         Text(stringResource((if (transaction.type == TransactionType.EXPENSE)
-            R.string.expense_amount else R.string.income_amount), transaction.amount))
+            R.string.expense_amount else R.string.income_amount),
+            moneyFormatter.format(transaction.amount)),
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis)
 
     }
 }
@@ -85,7 +99,7 @@ internal fun TransactionRow(transaction: Transaction) {
 @Composable
 internal fun TransactionsHistoryListPreview() {
     Surface {
-        TransactionsHistoryList(mapOf(
+        TransactionsHistoryList(MoneyFormatter(), mapOf(
             Pair(
                 TimeMillis(), listOf(
                     Transaction(

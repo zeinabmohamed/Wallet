@@ -4,8 +4,8 @@
     <string name="expenses">Expenses</string>
     <string name="income">Income</string>
     <string name="balance">Balance</string>
-    <string name="income_amount">%.2f $</string>
-    <string name="expense_amount">- %.2f $</string>
+    <string name="income_amount">%s $</string>
+    <string name="expense_amount">- %s $</string>
     <string name="loading">Loading…</string>
     <string name="user_transaction_history">Transactions History</string>
     <string name="add_transaction">Add Transaction</string>

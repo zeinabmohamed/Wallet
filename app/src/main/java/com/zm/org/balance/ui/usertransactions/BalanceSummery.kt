@@ -14,9 +14,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.zm.org.balance.R
 import com.zm.org.balance.domain.entity.UserBalanceSummary
+import com.zm.org.balance.util.MoneyFormatter
 
 @Composable
-internal fun BalanceSummery(balanceSummary: UserBalanceSummary) {
+internal fun BalanceSummery(moneyFormatter: MoneyFormatter,balanceSummary: UserBalanceSummary) {
     Card(
         modifier = Modifier
             .clip(RoundedCornerShape(dimensionResource(R.dimen.padding_large)))
@@ -36,7 +37,7 @@ internal fun BalanceSummery(balanceSummary: UserBalanceSummary) {
             ) {
                 Column {
                     Text(stringResource(R.string.expenses))
-                    Text(stringResource(R.string.expense_amount, balanceSummary.totalExpenses))
+                    Text(stringResource(R.string.expense_amount, moneyFormatter.format(balanceSummary.totalExpenses)))
                 }
                 Divider(
                     modifier = Modifier.fillMaxHeight()
@@ -45,7 +46,8 @@ internal fun BalanceSummery(balanceSummary: UserBalanceSummary) {
                 )
                 Column {
                     Text(stringResource(R.string.income))
-                    Text(stringResource(R.string.income_amount, balanceSummary.totalIncomes))
+                    Text(stringResource(R.string.income_amount,
+                        moneyFormatter.format(balanceSummary.totalIncomes)))
                 }
                 Divider(
                     modifier = Modifier.fillMaxHeight()
@@ -54,14 +56,19 @@ internal fun BalanceSummery(balanceSummary: UserBalanceSummary) {
                 )
                 Column {
                     Text(stringResource(R.string.balance))
-                    Text(stringResource(R.string.income_amount, balanceSummary.balance))
+                    Text(stringResource(R.string.income_amount,
+                        moneyFormatter.format(balanceSummary.balance)))
                 }
             }
             LinearProgressIndicator(
                 modifier = Modifier.fillMaxWidth()
                     .clip(RoundedCornerShape(dimensionResource(R.dimen.padding_large)))
                     .height(dimensionResource(R.dimen.padding_large)),
-                progress = ((balanceSummary.totalExpenses) / balanceSummary.totalIncomes),
+                progress = if (balanceSummary.totalIncomes <= 0) {
+                    100f
+                } else {
+                    ((balanceSummary.totalExpenses) / balanceSummary.totalIncomes)
+                },
             )
         }
     }
@@ -71,7 +78,7 @@ internal fun BalanceSummery(balanceSummary: UserBalanceSummary) {
 @Composable
 internal fun BalanceSummeryPreview() {
     Surface {
-        BalanceSummery(UserBalanceSummary(
+        BalanceSummery(MoneyFormatter(),UserBalanceSummary(
             20f,
             70f,
             50f,

@@ -26,13 +26,18 @@ import com.zm.org.balance.R
 import com.zm.org.balance.domain.entity.Transaction
 import com.zm.org.balance.domain.entity.UserBalanceSummary
 import com.zm.org.balance.ui.usertransactions.TransactionsHistoryViewState.*
+import com.zm.org.balance.util.MoneyFormatter
 import com.zm.org.balance.util.TimeMillis
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class UserTransactionsFragment : Fragment() {
 
     private val viewModel: UserTransactionsViewModel by viewModels()
+
+    @Inject
+    lateinit var moneyFormatter: MoneyFormatter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,12 +46,13 @@ class UserTransactionsFragment : Fragment() {
     ): View = ComposeView(requireContext()).apply {
         setContent {
             val state = viewModel.viewState.value
-            UserTransactionsView(state)
+            UserTransactionsView(moneyFormatter, state)
         }
     }
 
     @Composable
     fun UserTransactionsView(
+        moneyFormatter: MoneyFormatter,
         transactionsHistoryListViewState: TransactionsHistoryViewState,
     ) {
         val openDialog = remember { mutableStateOf(false) }
@@ -70,9 +76,11 @@ class UserTransactionsFragment : Fragment() {
             when (transactionsHistoryListViewState) {
                 is LoadingState -> LoadingStateView()
                 is TransactionsHistoryState ->
-                    SuccessTransactionHistoryView(openDialog, transactionsHistoryListViewState.data)
+                    SuccessTransactionHistoryView(moneyFormatter, openDialog,
+                        transactionsHistoryListViewState.data)
                 is ErrorState -> {
-                    SuccessTransactionHistoryView(openDialog, transactionsHistoryListViewState.data)
+                    SuccessTransactionHistoryView(moneyFormatter, openDialog,
+                        transactionsHistoryListViewState.data)
                     Toast.makeText(requireContext(),
                         transactionsHistoryListViewState.error,
                         Toast.LENGTH_SHORT).show()
@@ -83,16 +91,17 @@ class UserTransactionsFragment : Fragment() {
 
     @Composable
     private fun SuccessTransactionHistoryView(
+        moneyFormatter: MoneyFormatter,
         openDialog: MutableState<Boolean>,
         data: Pair<UserBalanceSummary, Map<TimeMillis, List<Transaction>>>?,
     ) {
         data?.let {
             Column {
                 data.first.let { balanceHistory ->
-                    BalanceSummery(balanceHistory)
+                    BalanceSummery(moneyFormatter, balanceHistory)
                 }
                 data.second.let { transactionsHistory ->
-                    TransactionsHistoryList(transactionsHistory)
+                    TransactionsHistoryList(moneyFormatter, transactionsHistory)
                 }
             }
         } ?: let {
