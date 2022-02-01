@@ -10,6 +10,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -43,6 +44,7 @@ internal fun BalanceSummery(moneyFormatter: MoneyFormatter, balanceSummary: User
                     Text(stringResource(R.string.expenses))
                     Text(stringResource(R.string.expense_amount,
                         moneyFormatter.format(balanceSummary.totalExpenses)), maxLines = 1,
+                        modifier = Modifier.testTag("expensesAmountLabel"),
                         overflow = TextOverflow.Ellipsis)
                 }
                 Divider(
@@ -56,6 +58,7 @@ internal fun BalanceSummery(moneyFormatter: MoneyFormatter, balanceSummary: User
                     Text(stringResource(R.string.income))
                     Text(stringResource(R.string.income_amount,
                         moneyFormatter.format(balanceSummary.totalIncomes)), maxLines = 1,
+                        modifier = Modifier.testTag("incomesAmountLabel"),
                         overflow = TextOverflow.Ellipsis)
                 }
                 Divider(
@@ -69,6 +72,7 @@ internal fun BalanceSummery(moneyFormatter: MoneyFormatter, balanceSummary: User
                     Text(stringResource(R.string.balance))
                     Text(stringResource(R.string.income_amount,
                         moneyFormatter.format(balanceSummary.balance)),
+                        modifier = Modifier.testTag("balanceAmountLabel"),
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis)
                 }

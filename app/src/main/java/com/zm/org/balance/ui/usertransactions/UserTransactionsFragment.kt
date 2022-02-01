@@ -16,6 +16,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -59,12 +60,16 @@ class UserTransactionsFragment : Fragment() {
         Scaffold(
             topBar = {
                 TopAppBar(title = {
-                    Text(stringResource(R.string.user_transaction_history))
+                    Text(
+                        stringResource(R.string.user_transaction_history),
+                        modifier = Modifier.testTag("screenTitle"),
+                    )
                 })
             },
             floatingActionButton = {
                 if (transactionsHistoryListViewState !is LoadingState) {
                     FloatingActionButton(
+                       modifier =  Modifier.testTag("addTransactionButton"),
                         onClick = {
                             openDialog.value = true
                         }) {

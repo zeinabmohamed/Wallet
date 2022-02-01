@@ -16,6 +16,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -69,7 +70,7 @@ fun AddTransactionDialog(
                         stringResource(R.string.transaction_type)
                     else
                         transactionTypes[selectedIndex.value],
-                        modifier = Modifier.fillMaxWidth().border(
+                        modifier = Modifier.testTag("transactionType").fillMaxWidth().border(
                             border = BorderStroke(dimensionResource(R.dimen.padding_very_small),
                                 Color.LightGray),
                             shape = RoundedCornerShape(dimensionResource(R.dimen.padding_medium))
@@ -80,7 +81,9 @@ fun AddTransactionDialog(
                         onDismissRequest = { expanded.value = false },
                     ) {
                         transactionTypes.forEachIndexed { index, itemLabel ->
-                            DropdownMenuItem(onClick = {
+                            DropdownMenuItem(
+                                modifier = Modifier.testTag("itemLabel:${itemLabel}"),
+                                onClick = {
                                 selectedIndex.value = index
                                 expanded.value = false
                             }) {
@@ -94,7 +97,7 @@ fun AddTransactionDialog(
 
                 OutlinedTextField(
                     value = transactionTitleState.value,
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier.fillMaxWidth().testTag("transactionDesc"),
                     onValueChange = { newValue ->
                         if (newValue.isNotBlank()) {
                             transactionTitleErrorState.value = false
@@ -110,7 +113,7 @@ fun AddTransactionDialog(
 
                 OutlinedTextField(
                     value = transactionAmountState.value,
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier.fillMaxWidth().testTag("transactionAmount"),
                     onValueChange = { newValue ->
                         if (newValue.isNotBlank()) {
                             transactionAmountErrorState.value = false
@@ -131,6 +134,7 @@ fun AddTransactionDialog(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Button(
+                    modifier =Modifier.testTag("AddButton"),
                     onClick = {
                         if (selectedIndex.value == -1) {
                             Toast.makeText(context,
