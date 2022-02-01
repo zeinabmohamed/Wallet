@@ -40,7 +40,7 @@ internal fun TransactionsHistoryRow(
             .clip(RoundedCornerShape(dimensionResource(R.dimen.padding_large)))
             .background(color = MaterialTheme.colors.surface)
             .padding(dimensionResource(R.dimen.padding_large)),
-        border = BorderStroke(dimensionResource(R.dimen.padding_very_small), Color.Gray),
+        border = BorderStroke(dimensionResource(R.dimen.padding_very_small), Color.LightGray),
         elevation = dimensionResource(R.dimen.padding_medium)
     ) {
         Column {
@@ -48,7 +48,7 @@ internal fun TransactionsHistoryRow(
             Divider(
                 modifier = Modifier.fillMaxWidth()
                     .height(dimensionResource(R.dimen.padding_very_small)),
-                color = Color.Gray
+                color = Color.LightGray
             )
             Column {
                 transactionList.forEachIndexed { index, transaction ->
@@ -57,7 +57,7 @@ internal fun TransactionsHistoryRow(
                         Divider(
                             modifier = Modifier.fillMaxWidth()
                                 .height(dimensionResource(R.dimen.padding_very_small)),
-                            color = Color.Gray
+                            color = Color.LightGray
                         )
                     }
                 }

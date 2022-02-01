@@ -1,6 +1,7 @@
 package com.zm.org.balance.di
 
 import com.zm.org.balance.data.usertransactions.UserTransactionsRepository
+import com.zm.org.balance.domain.usertransactions.AddUserTransactionUseCase
 import com.zm.org.balance.domain.usertransactions.GetUserBalanceSummaryUseCase
 import com.zm.org.balance.domain.usertransactions.GetUserTransactionsCategorizedByDateUseCase
 import com.zm.org.balance.domain.usertransactions.TransactionMapper
@@ -29,6 +30,17 @@ internal object ViewModelModule {
         transactionMapper: TransactionMapper,
     ): GetUserTransactionsCategorizedByDateUseCase {
         return GetUserTransactionsCategorizedByDateUseCase(
+            userTransactionsRepository,
+            transactionMapper)
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun provideAddUserTransactionUseCase(
+        userTransactionsRepository: UserTransactionsRepository,
+        transactionMapper: TransactionMapper,
+    ): AddUserTransactionUseCase {
+        return AddUserTransactionUseCase(
             userTransactionsRepository,
             transactionMapper)
     }

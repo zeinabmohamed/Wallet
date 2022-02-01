@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.zm.org.balance.domain.entity.Transaction
+import com.zm.org.balance.domain.usertransactions.AddUserTransactionUseCase
 import com.zm.org.balance.domain.usertransactions.GetUserBalanceSummaryUseCase
 import com.zm.org.balance.domain.usertransactions.GetUserTransactionsCategorizedByDateUseCase
 import com.zm.org.balance.ui.usertransactions.TransactionsHistoryViewState.LoadingState
@@ -17,6 +18,7 @@ import javax.inject.Inject
 class UserTransactionsViewModel @Inject constructor(
     private val balanceSummaryUseCase: GetUserBalanceSummaryUseCase,
     private val transactionsCategorizedByDateUseCase: GetUserTransactionsCategorizedByDateUseCase,
+    private val addUserTransactionUseCase: AddUserTransactionUseCase,
 ) : ViewModel() {
     private val initialViewState: TransactionsHistoryViewState = LoadingState
     val viewState: MutableState<TransactionsHistoryViewState> =
@@ -24,15 +26,23 @@ class UserTransactionsViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            val userBalance = balanceSummaryUseCase.invoke()
-
-            val transactionHistory = transactionsCategorizedByDateUseCase.invoke()
-
-            viewState.value = TransactionsHistoryState(data = Pair(userBalance, transactionHistory))
+            loadTransactionsHistory()
         }
     }
 
+    private suspend fun loadTransactionsHistory() {
+        val userBalance = balanceSummaryUseCase.invoke()
+
+        val transactionHistory = transactionsCategorizedByDateUseCase.invoke()
+
+        viewState.value = TransactionsHistoryState(data = Pair(userBalance, transactionHistory))
+    }
+
     fun onAddTransaction(transaction: Transaction) {
-        TODO("Not yet implemented")
+        viewModelScope.launch {
+            viewState.value = LoadingState
+            addUserTransactionUseCase.invoke(transaction)
+            loadTransactionsHistory()
+        }
     }
 }
