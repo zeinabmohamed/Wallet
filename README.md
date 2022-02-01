@@ -1,7 +1,6 @@
 /**
-
 * All copy rights back to Zeinab Abdelmawla
-  **/
+**/
 
   
 Wallet Mobile App
@@ -25,9 +24,9 @@ App Sample
 
 Screenshots
 -------------
-![Empty List]<img src="screenshots/add_transaction.png" width="300" height="400">
-![Transactions List]<img src="screenshots/transactions_list.png" width="300" height="400">
-![Add Transactions]<img src="screenshots/add_transaction.png" width="300" height="400">
+![Empty List]<img src="screenshots/add_transaction.png" width="200" height="300">
+![Transactions List]<img src="screenshots/transactions_list.png" width="200" height="300">
+![Add Transactions]<img src="screenshots/add_transaction.png" width="200" height="300">
 
 Getting Started
 ---------------
