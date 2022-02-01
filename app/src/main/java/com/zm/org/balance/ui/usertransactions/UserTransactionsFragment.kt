@@ -94,20 +94,19 @@ class UserTransactionsFragment : Fragment() {
                 data.second.let { transactionsHistory ->
                     TransactionsHistoryList(transactionsHistory)
                 }
-                if (openDialog.value) {
-                    AddTransactionDialog(
-                        requireContext(),
-                        openDialog
-                    ) {
-                        viewModel.onAddTransaction(data, it)
-                    }
-                }
             }
         } ?: let {
-            //TODO(show empty view)
+            EmptyTrasnationsView()
+        }
+        if (openDialog.value) {
+            AddTransactionDialog(
+                requireContext(),
+                openDialog
+            ) {
+                viewModel.onAddTransaction(data, it)
+            }
         }
     }
-
 
     @Preview
     @Composable

@@ -35,11 +35,14 @@ class UserTransactionsViewModel @Inject constructor(
 
     private suspend fun loadTransactionsHistory() {
         runCatching {
-            val userBalance = balanceSummaryUseCase.invoke()
             val transactionHistory = transactionsCategorizedByDateUseCase.invoke()
-            Pair(userBalance, transactionHistory)
+            transactionHistory.takeIf { it.isNotEmpty() }?.let {
+                balanceSummaryUseCase.invoke()
+            }?.run {
+                Pair(this, transactionHistory)
+            }
         }.onSuccess {
-            viewState.value = TransactionsHistoryState(data = Pair(it.first, it.second))
+            viewState.value = TransactionsHistoryState(data = it)
         }.onFailure {
             viewState.value = ErrorState(error = errorToUserMessage.toUserMessage(it))
         }
