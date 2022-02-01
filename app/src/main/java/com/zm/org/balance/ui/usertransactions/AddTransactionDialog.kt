@@ -28,6 +28,8 @@ import com.zm.org.balance.util.TimeMillis
 import java.util.*
 
 
+private const val MAX_ACCEPTED_TRANSACTION_AMOUNT = 1000000
+
 @Composable
 fun AddTransactionDialog(
     context: Context,
@@ -143,6 +145,12 @@ fun AddTransactionDialog(
                         }
 
                         if (transactionAmountState.value.isNullOrEmpty()) {
+                            transactionAmountErrorState.value = true
+                            return@Button
+                        } else if (transactionAmountState.value.toFloat() > MAX_ACCEPTED_TRANSACTION_AMOUNT) {
+                            Toast.makeText(context,
+                                context.getString(R.string.invalid_amount),
+                                Toast.LENGTH_SHORT).show()
                             transactionAmountErrorState.value = true
                             return@Button
                         }

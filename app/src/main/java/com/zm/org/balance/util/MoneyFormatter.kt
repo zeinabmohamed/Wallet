@@ -11,10 +11,10 @@ class MoneyFormatter @Inject constructor() {
     fun format(amount: Float): String {
         return when {
             amount > OneMillion -> {
-                String.format("%.02f", (amount/(OneMillion))).plus("M")
+                String.format("%.02f", (amount / (OneMillion))).plus("M")
             }
             amount > OneThousand -> {
-                String.format("%.02f", (amount/(OneThousand))).plus("K")
+                String.format("%.02f", (amount / (OneThousand))).plus("K")
             }
             else -> {
                 String.format("%.02f", amount)
