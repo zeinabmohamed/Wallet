@@ -26,11 +26,13 @@ Screenshots
 -------------
 <img src="screenshots/empty_transactions.png" width="200" height="300"><img src="screenshots/transactions_list.png" width="200" height="300"><img src="screenshots/add_transaction.png" width="200" height="300">
 
-Getting Started
+Testing
 ---------------
 
-This App uses the Gradle build system. To build this project, use the
-'gradlew build' command or use 'Import Project' in Android Studio.
+- For functionality test : covered by unit testing
+- For UiTest flow : covered by Instrumentation testing
+
+<img src="screenshots/uitests.png" width="400" height="400">
 
 Dependencies
 -------
