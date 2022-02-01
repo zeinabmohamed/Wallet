@@ -24,9 +24,7 @@ App Sample
 
 Screenshots
 -------------
-<img src="screenshots/add_transaction.png" width="200" height="300">
-<img src="screenshots/transactions_list.png" width="200" height="300">
-<img src="screenshots/add_transaction.png" width="200" height="300">
+<img src="screenshots/add_transaction.png" width="200" height="300"><img src="screenshots/transactions_list.png" width="200" height="300"><img src="screenshots/add_transaction.png" width="200" height="300">
 
 Getting Started
 ---------------
