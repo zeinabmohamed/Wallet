@@ -22,7 +22,7 @@ internal fun BalanceSummery(balanceSummary: UserBalanceSummary) {
             .clip(RoundedCornerShape(dimensionResource(R.dimen.padding_large)))
             .background(color = MaterialTheme.colors.surface)
             .padding(dimensionResource(R.dimen.padding_large)),
-        border = BorderStroke(dimensionResource(R.dimen.padding_very_small), Color.Gray),
+        border = BorderStroke(dimensionResource(R.dimen.padding_very_small), Color.LightGray),
         elevation = dimensionResource(R.dimen.padding_medium)
     ) {
         Column(
@@ -41,7 +41,7 @@ internal fun BalanceSummery(balanceSummary: UserBalanceSummary) {
                 Divider(
                     modifier = Modifier.fillMaxHeight()
                         .width(dimensionResource(R.dimen.padding_very_small)),
-                    color = Color.Gray
+                    color = Color.LightGray
                 )
                 Column {
                     Text(stringResource(R.string.income))
@@ -50,7 +50,7 @@ internal fun BalanceSummery(balanceSummary: UserBalanceSummary) {
                 Divider(
                     modifier = Modifier.fillMaxHeight()
                         .width(dimensionResource(R.dimen.padding_very_small)),
-                    color = Color.Gray
+                    color = Color.LightGray
                 )
                 Column {
                     Text(stringResource(R.string.balance))

@@ -6,7 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
@@ -40,11 +44,22 @@ class UserTransactionsFragment : Fragment() {
     fun UserTransactionsView(
         transactionsHistoryListViewState: TransactionsHistoryViewState,
     ) {
+        val openDialog = remember { mutableStateOf(false) }
         Scaffold(
             topBar = {
                 TopAppBar(title = {
                     Text(stringResource(R.string.user_transaction_history))
                 })
+            },
+            floatingActionButton = {
+                if (transactionsHistoryListViewState !is LoadingState) {
+                    FloatingActionButton(
+                        onClick = {
+                            openDialog.value = true
+                        }) {
+                        Icon(Icons.Filled.Add, "")
+                    }
+                }
             }
         ) {
             when (transactionsHistoryListViewState) {
@@ -56,6 +71,14 @@ class UserTransactionsFragment : Fragment() {
                         }
                         transactionsHistoryListViewState.data?.second?.let { transactionsHistory ->
                             TransactionsHistoryList(transactionsHistory)
+                        }
+                        if (openDialog.value) {
+                            AddTransactionDialog(
+                                requireContext(),
+                                openDialog
+                            ) {
+                                viewModel.onAddTransaction(it)
+                            }
                         }
                     }
             }

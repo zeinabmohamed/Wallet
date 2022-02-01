@@ -4,6 +4,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.zm.org.balance.domain.entity.Transaction
 import com.zm.org.balance.domain.usertransactions.GetUserBalanceSummaryUseCase
 import com.zm.org.balance.domain.usertransactions.GetUserTransactionsCategorizedByDateUseCase
 import com.zm.org.balance.ui.usertransactions.TransactionsHistoryViewState.LoadingState
@@ -29,5 +30,9 @@ class UserTransactionsViewModel @Inject constructor(
 
             viewState.value = TransactionsHistoryState(data = Pair(userBalance, transactionHistory))
         }
+    }
+
+    fun onAddTransaction(transaction: Transaction) {
+        TODO("Not yet implemented")
     }
 }
