@@ -5,11 +5,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.zm.org.balance.domain.entity.Transaction
+import com.zm.org.balance.domain.entity.UserBalanceSummary
 import com.zm.org.balance.domain.usertransactions.AddUserTransactionUseCase
 import com.zm.org.balance.domain.usertransactions.GetUserBalanceSummaryUseCase
 import com.zm.org.balance.domain.usertransactions.GetUserTransactionsCategorizedByDateUseCase
-import com.zm.org.balance.ui.usertransactions.TransactionsHistoryViewState.LoadingState
-import com.zm.org.balance.ui.usertransactions.TransactionsHistoryViewState.TransactionsHistoryState
+import com.zm.org.balance.ui.error.ErrorToUserMessage
+import com.zm.org.balance.ui.usertransactions.TransactionsHistoryViewState.*
+import com.zm.org.balance.util.TimeMillis
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -19,6 +21,7 @@ class UserTransactionsViewModel @Inject constructor(
     private val balanceSummaryUseCase: GetUserBalanceSummaryUseCase,
     private val transactionsCategorizedByDateUseCase: GetUserTransactionsCategorizedByDateUseCase,
     private val addUserTransactionUseCase: AddUserTransactionUseCase,
+    private val errorToUserMessage: ErrorToUserMessage,
 ) : ViewModel() {
     private val initialViewState: TransactionsHistoryViewState = LoadingState
     val viewState: MutableState<TransactionsHistoryViewState> =
@@ -31,18 +34,31 @@ class UserTransactionsViewModel @Inject constructor(
     }
 
     private suspend fun loadTransactionsHistory() {
-        val userBalance = balanceSummaryUseCase.invoke()
-
-        val transactionHistory = transactionsCategorizedByDateUseCase.invoke()
-
-        viewState.value = TransactionsHistoryState(data = Pair(userBalance, transactionHistory))
+        runCatching {
+            val userBalance = balanceSummaryUseCase.invoke()
+            val transactionHistory = transactionsCategorizedByDateUseCase.invoke()
+            Pair(userBalance, transactionHistory)
+        }.onSuccess {
+            viewState.value = TransactionsHistoryState(data = Pair(it.first, it.second))
+        }.onFailure {
+            viewState.value = ErrorState(error = errorToUserMessage.toUserMessage(it))
+        }
     }
 
-    fun onAddTransaction(transaction: Transaction) {
+    fun onAddTransaction(
+        currentStateData: Pair<UserBalanceSummary, Map<TimeMillis, List<Transaction>>>?,
+        transaction: Transaction,
+    ) {
         viewModelScope.launch {
             viewState.value = LoadingState
-            addUserTransactionUseCase.invoke(transaction)
-            loadTransactionsHistory()
+            runCatching {
+                addUserTransactionUseCase.invoke(transaction)
+            }.onSuccess {
+                loadTransactionsHistory()
+            }.onFailure {
+                viewState.value = ErrorState(error = errorToUserMessage.toUserMessage(it),
+                    data = currentStateData)
+            }
         }
     }
 }

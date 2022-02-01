@@ -25,6 +25,7 @@ import com.zm.org.balance.R
 import com.zm.org.balance.data.model.TransactionType
 import com.zm.org.balance.domain.entity.Transaction
 import com.zm.org.balance.util.TimeMillis
+import java.util.*
 
 
 @Composable
@@ -93,7 +94,7 @@ fun AddTransactionDialog(
                     value = transactionTitleState.value,
                     modifier = Modifier.fillMaxWidth(),
                     onValueChange = { newValue ->
-                        if(newValue.isNotBlank()){
+                        if (newValue.isNotBlank()) {
                             transactionTitleErrorState.value = false
                         }
                         transactionTitleState.value = newValue
@@ -109,7 +110,7 @@ fun AddTransactionDialog(
                     value = transactionAmountState.value,
                     modifier = Modifier.fillMaxWidth(),
                     onValueChange = { newValue ->
-                        if(newValue.isNotBlank()){
+                        if (newValue.isNotBlank()) {
                             transactionAmountErrorState.value = false
                         }
                         transactionAmountState.value = newValue

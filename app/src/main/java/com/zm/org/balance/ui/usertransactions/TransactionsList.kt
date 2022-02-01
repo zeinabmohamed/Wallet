@@ -44,7 +44,8 @@ internal fun TransactionsHistoryRow(
         elevation = dimensionResource(R.dimen.padding_medium)
     ) {
         Column {
-            Text(dayTimeMillis.getDayStr(), modifier = Modifier.padding(dimensionResource(R.dimen.padding_medium)))
+            Text(dayTimeMillis.getDayStr(),
+                modifier = Modifier.padding(dimensionResource(R.dimen.padding_medium)))
             Divider(
                 modifier = Modifier.fillMaxWidth()
                     .height(dimensionResource(R.dimen.padding_very_small)),
